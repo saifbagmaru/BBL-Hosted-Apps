@@ -2,7 +2,6 @@ import os
 import json
 from typing import Dict, Any, Optional
 from datetime import datetime
-from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import logging
