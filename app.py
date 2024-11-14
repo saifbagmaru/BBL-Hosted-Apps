@@ -10,10 +10,8 @@ import pandas as pd
 from datetime import datetime
 from mistralai_azure import MistralAzure
 import re
-from dotenv import load_dotenv
 import streamlit as st
 
-load_dotenv()
 
 st.set_page_config(
     page_title="Bug Buster Labs - AI Bot",
@@ -31,8 +29,17 @@ logging.basicConfig(
 # Get current date in the format needed for the prompt
 current_date = datetime.now().strftime('%Y-%m-%d')
 
-AZURE_AI_ENDPOINT = os.environ.get("AZURE_AI_ENDPOINT")
-AZURE_AI_API_KEY = os.environ.get("AZURE_AI_API_KEY")
+AZURE_AI_ENDPOINT = st.secrets["AZURE_AI_ENDPOINT"]
+AZURE_AI_API_KEY = st.secrets["AZURE_AI_API_KEY"]
+
+# Replace database configuration
+DB_CONFIG = {
+    "host": st.secrets["HOST"],
+    "database": st.secrets["DATABASE_NAME"],
+    "user": st.secrets["USER"],
+    "password": st.secrets["PASSWORD"],
+    "port": st.secrets["PORT"]
+}
 
 client = MistralAzure(azure_endpoint=AZURE_AI_ENDPOINT, azure_api_key=AZURE_AI_API_KEY)
 
@@ -218,14 +225,6 @@ def summary_llm(query, data):
     llm_response = resp.choices[0].message.content
     return llm_response
 
-
-DB_CONFIG = {
-    "host": os.environ.get('HOST'),
-    "database": os.environ.get('DATABASE_NAME'),
-    "user": os.environ.get('USER', 'bugbuster_admin'),
-    "password": os.environ.get('PASSWORD'),
-    "port": os.environ.get('PORT'),
-}
 
 class DateTimeEncoder(json.JSONEncoder):
     def default(self, obj):
