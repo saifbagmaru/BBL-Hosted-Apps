@@ -4,7 +4,6 @@ from datetime import datetime
 import pandas as pd
 from mistralai_azure import MistralAzure
 import re
-from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import logging
